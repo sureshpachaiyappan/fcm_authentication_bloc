@@ -1,0 +1,63 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "com.google.gms.google-services" // Apply the Google Services plugin
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
+if (flutterVersionCode == null) {
+    flutterVersionCode = "1"
+}
+
+def flutterVersionName = localProperties.getProperty("flutter.versionName")
+if (flutterVersionName == null) {
+    flutterVersionName = "1.0"
+}
+
+android {
+    namespace = "com.example.fcmauthcation"
+    compileSdk = 34 // Update this to your desired compile SDK version
+    ndkVersion = "21.4.7075529" // Ensure this matches your environment
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    defaultConfig {
+        applicationId = "com.example.fcmauthcation"
+        minSdk = 23
+        targetSdk = 33
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    implementation platform("com.google.firebase:firebase-bom:33.1.2")
+    implementation "com.google.firebase:firebase-analytics"
+}
